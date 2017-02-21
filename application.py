@@ -10,10 +10,7 @@ def jacobian_demo():
 
     # demo function
     f = 6*(x**5) - 5*(y**4)
-
-    # jacobian is just the first derivative wrt each variable
-
-
+    
     J = jacobian(f, [x, y])
     sess = tf.Session()
     print(sess.run(J, feed_dict={x: 3, y:5}))
