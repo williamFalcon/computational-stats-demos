@@ -77,7 +77,10 @@ def hessian(fn, vars):
                 df = tf.gradients(fn, v2)[0]
                 dg = tf.gradients(df, v1)[0]
                 temp.append(dg)
-            temp = [cons(0) if t == None else t for t in temp] # tensorflow returns None when there is no gradient, so we replace None with 0
+
+            # replace non grads with 0s
+            temp = [cons(0) if t is None else t for t in temp]
+
             temp = tf.stack(temp)
             mat.append(temp)
         mat = tf.stack(mat)
