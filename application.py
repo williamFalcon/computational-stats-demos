@@ -1,4 +1,18 @@
 import tensorflow as tf
+import automatic_diff as ad
+
+
+def test_ad():
+    x = ad.tensor(ad.int32, name='x')
+    y = ad.tensor(ad.int32, name='y')
+
+    z = (x*x)
+    grads = ad.gradients(z, [x])
+    basic_f = grads
+    print(basic_f(x=3, y=5))
+    
+    basic_f = ad.compile(z)
+    print(basic_f(x=3, y=5))
 
 
 # -------------------------
@@ -10,7 +24,7 @@ def jacobian_demo():
 
     # demo function
     f = 6*(x**5) - 5*(y**4)
-    
+
     J = jacobian(f, [x, y])
     sess = tf.Session()
     print(sess.run(J, feed_dict={x: 3, y:5}))
@@ -85,4 +99,4 @@ def hessian(fn, vars):
 
 
 
-hessian_demo()
+test_ad()
