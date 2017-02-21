@@ -10,7 +10,7 @@ def test_ad():
     grads = ad.gradients(z, [x])
     basic_f = grads
     print(basic_f(x=3, y=5))
-    
+
     basic_f = ad.compile(z)
     print(basic_f(x=3, y=5))
 

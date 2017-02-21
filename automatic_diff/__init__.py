@@ -1,2 +1,2 @@
-from automatic_diff import autodiff
+from automatic_diff.autodiff import *
 from automatic_diff.nodes import *
