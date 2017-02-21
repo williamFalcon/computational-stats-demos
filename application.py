@@ -1,6 +1,9 @@
 import tensorflow as tf
 
 
+# -------------------------
+# DEMOS
+# -------------------------
 def jacobian_demo():
     x = tf.placeholder(tf.float64, name='x')
     y = tf.placeholder(tf.float64, name='y')
@@ -25,28 +28,6 @@ def hessian_demo():
     H = hessian(f, [x,y])
     sess = tf.Session()
     print(sess.run(H, feed_dict={x: 3, y: 4}))
-
-def jacobian(fn, vars):
-    grads = tf.gradients(fn, vars)
-    return grads
-
-
-def hessian(fn, vars):
-        cons = lambda x: tf.constant(x, dtype=tf.float32)
-        mat = []
-        for v1 in vars:
-            temp = []
-            for v2 in vars:
-                # compute grad
-                print('calculating: d{} d{}'.format(v2.name, v1.name))
-                df = tf.gradients(fn, v2)[0]
-                dg = tf.gradients(df, v1)[0]
-                temp.append(dg)
-            temp = [cons(0) if t == None else t for t in temp] # tensorflow returns None when there is no gradient, so we replace None with 0
-            temp = tf.stack(temp)
-            mat.append(temp)
-        mat = tf.stack(mat)
-        return mat
 
 def newton_method_univar():
     x = tf.placeholder(tf.float64, name='x')
@@ -76,6 +57,32 @@ def newton_method_univar():
         x_0 = x_1
         print('error :', delta, 'root ', x_0)
     print('done')
+
+# ---------------------------
+# UTILS
+# ---------------------------
+def jacobian(fn, vars):
+    grads = tf.gradients(fn, vars)
+    return grads
+
+
+def hessian(fn, vars):
+        cons = lambda x: tf.constant(x, dtype=tf.float32)
+        mat = []
+        for v1 in vars:
+            temp = []
+            for v2 in vars:
+                # compute grad
+                print('calculating: d{} d{}'.format(v2.name, v1.name))
+                df = tf.gradients(fn, v2)[0]
+                dg = tf.gradients(df, v1)[0]
+                temp.append(dg)
+            temp = [cons(0) if t == None else t for t in temp] # tensorflow returns None when there is no gradient, so we replace None with 0
+            temp = tf.stack(temp)
+            mat.append(temp)
+        mat = tf.stack(mat)
+        return mat
+
 
 
 hessian_demo()
