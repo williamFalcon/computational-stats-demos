@@ -9,9 +9,7 @@ def jacobian_demo():
     f = 6*(x**5) - 5*(y**4)
 
     # jacobian is just the first derivative wrt each variable
-    def jacobian(fn, vars):
-        grads = tf.gradients(fn, vars)
-        return grads
+
 
     J = jacobian(f, [x, y])
     sess = tf.Session()
@@ -24,10 +22,17 @@ def hessian_demo():
 
     f = 6*(x**5) - 5*(y**4)*x**2
 
-    def cons(x):
-        return tf.constant(x, dtype=tf.float32)
+    H = hessian(f, [x,y])
+    sess = tf.Session()
+    print(sess.run(H, feed_dict={x: 3, y: 4}))
 
-    def hessian(fn, vars):
+def jacobian(fn, vars):
+    grads = tf.gradients(fn, vars)
+    return grads
+
+
+def hessian(fn, vars):
+        cons = lambda x: tf.constant(x, dtype=tf.float32)
         mat = []
         for v1 in vars:
             temp = []
@@ -42,11 +47,6 @@ def hessian_demo():
             mat.append(temp)
         mat = tf.stack(mat)
         return mat
-
-    H = hessian(f, [x,y])
-    sess = tf.Session()
-    print(sess.run(H, feed_dict={x: 3, y: 4}))
-
 
 def newton_method_univar():
     x = tf.placeholder(tf.float64, name='x')
@@ -78,4 +78,4 @@ def newton_method_univar():
     print('done')
 
 
-newton_method_univar()
+hessian_demo()
